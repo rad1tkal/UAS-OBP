@@ -101,6 +101,16 @@ public class Database {
         ResultSet rs = stmt.executeQuery(sql);
         return(rs);
     }
+    public ResultSet selectFoto2(String cari) throws SQLException{
+        String sql = "SELECT * FROM buku WHERE statusPinjam = ? AND (namaBuku like  ?  OR penerbit like ?  OR pengarang like   ?)";
+        PreparedStatement statement = db.prepareStatement(sql);
+        statement.setString(1, "Available");
+        statement.setString(2, "%" + cari + "%");
+        statement.setString(3, "%" + cari + "%");
+        statement.setString(4, "%" + cari + "%");
+        ResultSet rs = statement.executeQuery();
+        return(rs);
+    }
 
     public void userPinjam(String isbn)throws SQLException{
         String sql = "UPDATE buku set statusPinjam = 'BOOKED' WHERE isbn = ?";

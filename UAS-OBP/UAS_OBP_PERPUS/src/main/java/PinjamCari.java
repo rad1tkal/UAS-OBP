@@ -13,15 +13,15 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Pinjam extends JFrame{
+public class PinjamCari extends JFrame{
     private Container contain;
     container con = new container();
     ImagePanel ip = new ImagePanel();
     Login login;
     buttonPanel bp = new buttonPanel();
-    public static String cari;
-    searchPanel sp = new searchPanel();
-    public Pinjam() {
+
+
+    public PinjamCari() {
 
 
         setTitle("Peminjaman Buku");
@@ -32,7 +32,7 @@ public class Pinjam extends JFrame{
 
 
         add(ip);
-        add(sp);
+
         //add(con);
         JScrollPane scrollPane = new JScrollPane(con,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(new JScrollPane());
@@ -44,28 +44,7 @@ public class Pinjam extends JFrame{
 
     }
 
-    class searchPanel extends JPanel{
-        JLabel cblabel = new JLabel("Cari Buku");
-        JTextField cbfield = new JTextField();
-        JButton cbbutton = new JButton("Search");
-        public searchPanel(){
-            setLayout(new FlowLayout(FlowLayout.RIGHT));
-            add(cblabel);
-            add(cbfield);
-            cbfield.setPreferredSize(new Dimension(200,25));
-            add(cbbutton);
-            cbbutton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    cari = cbfield.getText();
-                    new PinjamCari();
-                    dispose();
-                }
-            });
 
-        }
-
-    }
     class buttonPanel extends JPanel{
         public buttonPanel(){
             setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -74,7 +53,7 @@ public class Pinjam extends JFrame{
             back.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new MenuPengguna();
+                    new Pinjam();
                     dispose();
                 }
             });
@@ -166,7 +145,7 @@ public class Pinjam extends JFrame{
             setLayout(new GridLayout(3,2));
             Border loweredBevel = BorderFactory.createLoweredBevelBorder();
             setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 10, 10), loweredBevel));
-            tampilkanBuku();
+            tampilkanBuku2();
 
 
         }
@@ -188,12 +167,14 @@ public class Pinjam extends JFrame{
             catch(ClassNotFoundException e){
                 e.printStackTrace();
             }
-
+            catch(NullPointerException e){
+                e.printStackTrace();
+            }
         }
         public void tampilkanBuku2(){
             try{
                 Database db = new Database();
-                rs = db.selectFoto2(cari);
+                rs = db.selectFoto2(Pinjam.cari);
                 while(rs.next()){
                     add(new buku(rs.getString("isbn"), rs.getString("fotobuku"), rs.getString("namaBuku"), rs.getString("pengarang"), rs.getString("penerbit"), rs.getString("tahunTerbit"), rs.getString("statusPinjam")));
 
@@ -206,7 +187,9 @@ public class Pinjam extends JFrame{
             catch(ClassNotFoundException e){
                 e.printStackTrace();
             }
-
+            catch(NullPointerException e){
+                e.printStackTrace();
+            }
         }
 
 
